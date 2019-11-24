@@ -10,16 +10,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import static com.ufabc.live.huffman.Huffman.huffman;
 
 public class Live {
     public static void main(String args[]) throws IOException{
         byte[] file = getFileInByteArray();
-        System.out.print(file.length);
+        huffman(file);
     }
     
     private static byte[] getFileInByteArray() throws FileNotFoundException, IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        FileInputStream fis = new FileInputStream(new File("res/canetaazul.mov"));
+        FileInputStream fis = new FileInputStream(new File("res/pele.mov"));
 
         byte[] buf = new byte[1024];
         int n;
