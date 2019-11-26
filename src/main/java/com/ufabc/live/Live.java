@@ -14,6 +14,7 @@ import static com.ufabc.live.huffman.Huffman.huffman;
 
 public class Live {
     public static void main(String args[]) throws IOException{
+
         byte[] file = getFileInByteArray();
         huffman(file);
     }
