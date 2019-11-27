@@ -54,9 +54,16 @@ public class Rle {
         for (int i = 0; i < original.length; i++) {
             byte current = original[i];
 
-            if (current != temp || count > 126) { // Max frequency
+            if (current != temp || count >= 255 ) { // Max frequency
                 // Save previous
-                byte freq = count.byteValue();
+                byte freq;
+
+                if(count <= 127){
+                    freq = count.byteValue();
+                } else {
+                    freq = (byte) ((count - 127) * -1);
+                }
+
                 if (count != 1) {
                     compressed = insertIntoArray(compressed, insertCount, (byte) 27); // 27 -> ESC on ASCII table
                     compressed = insertIntoArray(compressed, insertCount + 1, freq);
@@ -89,7 +96,13 @@ public class Rle {
         }
 
         // Save last byte
-        byte freq = count.byteValue();
+        byte freq;
+
+        if(count <= 127){
+            freq = count.byteValue();
+        } else {
+            freq = (byte) ((count - 127) * -1);
+        }
 
         compressed = insertIntoArray(compressed, insertCount, (byte) 27);
         compressed = insertIntoArray(compressed, insertCount + 1, freq);
@@ -124,7 +137,15 @@ public class Rle {
             byte s = bytes[c];
             if (s == (byte) 27) {
                 byte repeat = bytes[c + 1];
-                for (int j = 0; j < repeat; j++) {
+                int frequency;
+
+                if(repeat < 0) {
+                    frequency = (repeat * (-1)) + 127;
+                } else {
+                    frequency = repeat;
+                }
+
+                for (int j = 0; j < frequency; j++) {
                     decompressed = insertIntoArray(decompressed, indexCount, bytes[c + 2]);
                     indexCount++;
                 }
