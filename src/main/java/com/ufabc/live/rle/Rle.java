@@ -138,7 +138,6 @@ public class Rle {
     }
 
     private static void writeBytesToFileNio(byte[] bFile, String fileDest) {
-
         try {
             Path path = Paths.get(fileDest);
             Files.write(path, bFile);
