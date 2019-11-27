@@ -6,6 +6,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
+
+// Frequency notation used:
+// DFS
+// D: Separator - byte 27 -> ESC on ASCII table
+// F: Frequency
+// S: Symbol
+// If frequency is 1, then only the symbol is copied to the compressed array
+// Example:
+// Original sequence:     AAABBC
+// Compressed sequence:   @3A@2BC
+
 public class Rle {
 
     public static void main(String[] args) throws IOException {
@@ -19,7 +30,7 @@ public class Rle {
         // Get bytes from video
         byte[] original = getFileInByteArray("res/" + fileName);
 
-        if(original == null){
+        if (original == null) {
             return;
         }
 
@@ -43,21 +54,37 @@ public class Rle {
         for (int i = 0; i < original.length; i++) {
             byte current = original[i];
 
-            if (current != temp || count > 110) {
+            if (current != temp || count >= 255 ) { // Max frequency
                 // Save previous
-                byte freq = count.byteValue();
-                    if (count != 1) {
-                    compressed = insertIntoArray(compressed, insertCount, (byte) 27);
-                    compressed = insertIntoArray(compressed, insertCount + 1, (byte) 64);
-                    compressed = insertIntoArray(compressed, insertCount + 2, (byte) 12);
-                    compressed = insertIntoArray(compressed, insertCount + 3, (byte) 95);
-                    compressed = insertIntoArray(compressed, insertCount + 4, freq);
-                    compressed = insertIntoArray(compressed, insertCount + 5, temp);
+                byte freq;
 
-                    insertCount = insertCount + 6;
+                if(count <= 127){
+                    freq = count.byteValue();
                 } else {
-                    compressed = insertIntoArray(compressed, insertCount, temp);
-                    insertCount++;
+                    freq = (byte) ((count - 127) * -1);
+                }
+
+                if (count != 1) {
+                    compressed = insertIntoArray(compressed, insertCount, (byte) 27); // 27 -> ESC on ASCII table
+                    compressed = insertIntoArray(compressed, insertCount + 1, freq);
+                    compressed = insertIntoArray(compressed, insertCount + 2, temp);
+
+                    insertCount = insertCount + 3;
+                } else {
+
+                    // If byte 27 is found on the original array, insert it on the compressed array with the frequency notation
+                    // This way the decompression algorithm won't get confused and mess up the video
+                    if(temp == (byte) 27){
+                        compressed = insertIntoArray(compressed, insertCount, (byte) 27);
+                        compressed = insertIntoArray(compressed, insertCount + 1, freq);
+                        compressed = insertIntoArray(compressed, insertCount + 2, temp);
+
+                        insertCount = insertCount + 3;
+                    }else{
+                        compressed = insertIntoArray(compressed, insertCount, temp);
+                        insertCount++;
+                    }
+
                 }
 
                 count = 1;
@@ -69,24 +96,28 @@ public class Rle {
         }
 
         // Save last byte
-        byte freq = count.byteValue();
+        byte freq;
+
+        if(count <= 127){
+            freq = count.byteValue();
+        } else {
+            freq = (byte) ((count - 127) * -1);
+        }
 
         compressed = insertIntoArray(compressed, insertCount, (byte) 27);
-        compressed = insertIntoArray(compressed, insertCount + 1, (byte) 64);
-        compressed = insertIntoArray(compressed, insertCount + 2, (byte) 12);
-        compressed = insertIntoArray(compressed, insertCount + 3, (byte) 95);
-        compressed = insertIntoArray(compressed, insertCount + 4, freq);
-        compressed = insertIntoArray(compressed, insertCount + 5, temp);
-        insertCount = insertCount + 6;
+        compressed = insertIntoArray(compressed, insertCount + 1, freq);
+        compressed = insertIntoArray(compressed, insertCount + 2, temp);
+
+        insertCount = insertCount + 3;
 
         // Remove unused space
         compressed = cleanArray(compressed, insertCount);
 
         // Save compressed file
-        writeBytesToFileNio(compressed, "res/compressed_"+ fileNameNoExtension + ".aedii");
+        writeBytesToFileNio(compressed, "res/compressed_" + fileNameNoExtension + ".aedii");
 
         // Read compressed file
-        byte[] bytes = getFileInByteArray("res/compressed_"+ fileNameNoExtension + ".aedii");
+        byte[] bytes = getFileInByteArray("res/compressed_" + fileNameNoExtension + ".aedii");
 
         // Print Compressed File
         // ####################################################################
@@ -104,13 +135,21 @@ public class Rle {
         int c = 0;
         while (c < bytes.length) {
             byte s = bytes[c];
-            if ((s == (byte) 27) && (bytes[c + 1] == (byte) 64) && (bytes[c + 2] == (byte) 12) && (bytes[c + 3] == (byte) 95)) {
-                byte repeat = bytes[c + 4];
-                for (int j = 0; j < repeat; j++) {
-                    decompressed = insertIntoArray(decompressed, indexCount, bytes[c + 5]);
+            if (s == (byte) 27) {
+                byte repeat = bytes[c + 1];
+                int frequency;
+
+                if(repeat < 0) {
+                    frequency = (repeat * (-1)) + 127;
+                } else {
+                    frequency = repeat;
+                }
+
+                for (int j = 0; j < frequency; j++) {
+                    decompressed = insertIntoArray(decompressed, indexCount, bytes[c + 2]);
                     indexCount++;
                 }
-                c = c + 6;
+                c = c + 3;
             } else {
                 decompressed = insertIntoArray(decompressed, indexCount, s);
                 indexCount++;
@@ -138,6 +177,7 @@ public class Rle {
     }
 
     private static void writeBytesToFileNio(byte[] bFile, String fileDest) {
+
         try {
             Path path = Paths.get(fileDest);
             Files.write(path, bFile);
@@ -148,7 +188,7 @@ public class Rle {
 
     private static byte[] getFileInByteArray(String path) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        try{
+        try {
             FileInputStream fis = new FileInputStream(new File(path));
             byte[] buf = new byte[1024];
             int n;
@@ -158,7 +198,7 @@ public class Rle {
             }
 
             return baos.toByteArray();
-        } catch (FileNotFoundException e){
+        } catch (FileNotFoundException e) {
             System.out.println("File not found!");
         }
 
