@@ -1,3 +1,14 @@
-# live
+# Projeto Final - AEDII
+UFABC
 
-![alt text](https://i.kym-cdn.com/photos/images/original/001/332/283/deb.jpg)
+2019.3
+
+Algoritmos e Estruturas de Dados II
+
+Arquivos e Compressão
+
+Algoritmos de compressão:
+- Huffman
+- Run-Length Encoding
+- Huffman-RLE
+- RLE-Huffman
