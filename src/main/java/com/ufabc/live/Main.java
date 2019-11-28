@@ -58,12 +58,30 @@ public class Main {
                 // Decompress Huffman file
                 HuffmanDecompress.executeHuffmanDecompression("res/huff-rle/r", "res/huff-rle/", fileName , compressedRleFileNameNoExtension);
 
-                // Delete rebuilt huffman file
+                // Delete rebuilt Huffman file
                 File decompressedHuffmanFile = new File("res/huff-rle/r" + fileNameNoExtension + ".haedii");
                 decompressedHuffmanFile.delete();
                 break;
             case 4:
-//                Rle.executeRle("res/original/", "res/rle-huff/", fileName, fileNameNoExtension);
+                // Compress with RLE
+                Rle.executeRleCompression("res/original/", "res/rle-huff/", fileName, fileNameNoExtension);
+
+                // Compress RLE file with Huffman
+                HuffmanCompress.executeHuffmanCompression("res/rle-huff/", "res/rle-huff/r", fileNameNoExtension + ".raedii", fileNameNoExtension);
+
+                // Delete RLE file
+                File compressedRleFile = new File("res/rle-huff/" + fileNameNoExtension + ".raedii");
+                compressedRleFile.delete();
+
+                // Decompress Huffman file
+                HuffmanDecompress.executeHuffmanDecompression("res/rle-huff/r", "res/rle-huff/r", fileNameNoExtension + ".raedii" , fileNameNoExtension);
+
+                // Decompress RLE file
+                Rle.executeRleDecompression("res/rle-huff/r", "res/rle-huff/", fileName, fileNameNoExtension);
+
+                // Delete rebuilt RLE file
+                File decompressedRleFile = new File("res/rle-huff/r" + fileNameNoExtension + ".raedii");
+                decompressedRleFile.delete();
 
                 break;
             default:

@@ -197,6 +197,7 @@ public class Rle {
 
             return baos.toByteArray();
         } catch (FileNotFoundException e) {
+            System.out.println(path);
             System.out.println("Arquivo não encontrado!");
         }
 
