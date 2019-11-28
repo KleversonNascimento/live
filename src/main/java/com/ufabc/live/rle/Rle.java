@@ -23,12 +23,13 @@ public class Rle {
 
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("Run-Length Encoding");
         System.out.println("Digite o nome do arquivo (com a a extensão):");
         String fileName = scanner.nextLine();
         String fileNameNoExtension = fileName.split("\\.")[0];
 
         // Get bytes from video
-        byte[] original = getFileInByteArray("res/" + fileName);
+        byte[] original = getFileInByteArray("res/original/" + fileName);
 
         if (original == null) {
             return;
@@ -114,10 +115,10 @@ public class Rle {
         compressed = cleanArray(compressed, insertCount);
 
         // Save compressed file
-        writeBytesToFileNio(compressed, "res/compressed_" + fileNameNoExtension + ".aedii");
+        writeBytesToFileNio(compressed, "res/rle/" + fileNameNoExtension + ".raedii");
 
         // Read compressed file
-        byte[] bytes = getFileInByteArray("res/compressed_" + fileNameNoExtension + ".aedii");
+        byte[] bytes = getFileInByteArray("res/rle/" + fileNameNoExtension + ".raedii");
 
         // Print Compressed File
         // ####################################################################
@@ -171,7 +172,7 @@ public class Rle {
 //        System.out.println("");
 
         // Save decompressed file
-        writeBytesToFileNio(decompressed, "res/result_" + fileName);
+        writeBytesToFileNio(decompressed, "res/rle/" + fileName);
 
         System.out.println("Done!");
     }

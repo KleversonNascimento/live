@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Scanner;
 
 
 /**
@@ -28,9 +29,16 @@ public final class HuffmanCompress {
 	
 	// Command line main application function.
 	public static void main(String[] args) throws IOException {
+
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.println("Huffman Compression");
+		System.out.println("Digite o nome do arquivo (com a a extensão):");
+		String fileName = scanner.nextLine();
+		String fileNameNoExtension = fileName.split("\\.")[0];
 		
-		File inputFile  = new File("res/sunrise.mp4");
-		File outputFile = new File("res/sunrise.compress");
+		File inputFile  = new File("res/original/" + fileName);
+		File outputFile = new File("res/huff/" + fileNameNoExtension + ".haedii");
 		
 		// Read input file once to compute symbol frequencies.
 		// The resulting generated code is optimal for static Huffman coding and also canonical.

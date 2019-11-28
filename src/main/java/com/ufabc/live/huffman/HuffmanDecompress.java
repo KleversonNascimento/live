@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Scanner;
 
 
 /**
@@ -25,9 +26,16 @@ public final class HuffmanDecompress {
 	
 	// Command line main application function.
 	public static void main(String[] args) throws IOException {
+
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.println("Huffman Decompression");
+		System.out.println("Digite o nome do arquivo (com a a extensão):");
+		String fileName = scanner.nextLine();
+		String fileNameNoExtension = fileName.split("\\.")[0];
 		
-		File inputFile  = new File("res/sunrise.compress");
-		File outputFile = new File("res/new_sunrise.mp4");
+		File inputFile  = new File("res/huff/" + fileName);
+		File outputFile = new File("res/huff/" + fileNameNoExtension + ".mov");
 		
 		// Perform file decompression
 		try (BitInputStream in = new BitInputStream(new BufferedInputStream(new FileInputStream(inputFile)))) {
