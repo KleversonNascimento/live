@@ -20,7 +20,7 @@ import java.util.Scanner;
 public class Rle {
 
     public static void executeRleCompression(String readPath, String writePath, String fileName, String fileNameNoExtension) throws IOException {
-        System.out.println("Run-Length Encoding Compression");
+        System.out.println("Compressão Run-Length Encoding");
 
         // Get bytes from video
         byte[] original = getFileInByteArray(readPath + fileName);

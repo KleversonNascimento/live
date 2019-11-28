@@ -67,14 +67,14 @@ public class Main {
                 Rle.executeRleCompression("res/original/", "res/rle-huff/", fileName, fileNameNoExtension);
 
                 // Compress RLE file with Huffman
-                HuffmanCompress.executeHuffmanCompression("res/rle-huff/", "res/rle-huff/r", fileNameNoExtension + ".raedii", fileNameNoExtension);
+                HuffmanCompress.executeHuffmanCompression("res/rle-huff/", "res/rle-huff/", fileNameNoExtension + ".raedii", fileNameNoExtension);
 
                 // Delete RLE file
                 File compressedRleFile = new File("res/rle-huff/" + fileNameNoExtension + ".raedii");
                 compressedRleFile.delete();
 
                 // Decompress Huffman file
-                HuffmanDecompress.executeHuffmanDecompression("res/rle-huff/r", "res/rle-huff/r", fileNameNoExtension + ".raedii" , fileNameNoExtension);
+                HuffmanDecompress.executeHuffmanDecompression("res/rle-huff/", "res/rle-huff/r", fileNameNoExtension + ".raedii" , fileNameNoExtension);
 
                 // Decompress RLE file
                 Rle.executeRleDecompression("res/rle-huff/r", "res/rle-huff/", fileName, fileNameNoExtension);
@@ -85,7 +85,7 @@ public class Main {
 
                 break;
             default:
-                System.out.println("Invalid option!");
+                System.out.println("Opção inválida!");
         }
 
 

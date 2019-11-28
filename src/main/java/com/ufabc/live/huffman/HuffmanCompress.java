@@ -30,7 +30,7 @@ public final class HuffmanCompress {
 	// Command line main application function.
 	public static void executeHuffmanCompression(String readPath, String writePath, String fileName, String fileNameNoExtension) throws IOException {
 
-		System.out.println("Huffman Compression");
+		System.out.println("Compressão Huffman");
 
 		File inputFile  = new File(readPath + fileName);
 		File outputFile = new File(writePath + fileNameNoExtension + ".haedii");
