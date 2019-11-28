@@ -36,27 +36,31 @@ public class Main {
                 Rle.executeRleDecompression("res/rle/", "res/rle/", fileName, fileNameNoExtension);
                 break;
             case 3:
-//                HuffmanCompress.executeHuffmanCompression("res/original/", "res/huff-rle/", fileName, fileNameNoExtension);
-//
-//                String compressedHuffmanFileName = fileNameNoExtension + ".haedii";
-//                String compressedHuffmanFileNameNoExtension = compressedHuffmanFileName.split("\\.")[0];
-//
-//                Rle.executeRleCompression("res/huff-rle/", "res/huff-rle/", compressedHuffmanFileName, compressedHuffmanFileNameNoExtension);
-//
-//                // Delete huffman file
-//                File compressedHuffmanFile = new File("res/huff-rle/" + compressedHuffmanFileName);
-//                compressedHuffmanFile.delete();
-//
-//                String compressedRleFileName = fileNameNoExtension + ".raedii";
-//                String compressedRleFileNameNoExtension = compressedRleFileName.split("\\.")[0];
-//
-//                Rle.executeRleDecompression("res/huff-rle/", "res/huff-rle/r", compressedRleFileName, compressedRleFileNameNoExtension);
-//
-//                HuffmanDecompress.executeHuffmanDecompression("res/huff-rle/r", "res/huff-rle/", fileName, fileNameNoExtension);
-//
-//                // Delete rebuilt huffman file
-//                File decompressedHuffmanFile = new File("res/huff-rle/r" + compressedHuffmanFileName);
-//                decompressedHuffmanFile.delete();
+                // Compress with Huffman
+                HuffmanCompress.executeHuffmanCompression("res/original/", "res/huff-rle/", fileName, fileNameNoExtension);
+
+                String compressedHuffmanFileName = fileNameNoExtension + ".haedii";
+                String compressedHuffmanFileNameNoExtension = compressedHuffmanFileName.split("\\.")[0];
+
+                // Compress Huffman file with RLE
+                Rle.executeRleCompression("res/huff-rle/", "res/huff-rle/", compressedHuffmanFileName, compressedHuffmanFileNameNoExtension);
+
+                // Delete huffman file
+                File compressedHuffmanFile = new File("res/huff-rle/" + compressedHuffmanFileName);
+                compressedHuffmanFile.delete();
+
+                String compressedRleFileName = fileNameNoExtension + ".raedii";
+                String compressedRleFileNameNoExtension = compressedRleFileName.split("\\.")[0];
+
+                // Decompress RLE file
+                Rle.executeRleDecompression("res/huff-rle/", "res/huff-rle/r", compressedRleFileNameNoExtension + ".haedii", compressedRleFileNameNoExtension);
+
+                // Decompress Huffman file
+                HuffmanDecompress.executeHuffmanDecompression("res/huff-rle/r", "res/huff-rle/", fileName , compressedRleFileNameNoExtension);
+
+                // Delete rebuilt huffman file
+                File decompressedHuffmanFile = new File("res/huff-rle/r" + fileNameNoExtension + ".haedii");
+                decompressedHuffmanFile.delete();
                 break;
             case 4:
 //                Rle.executeRle("res/original/", "res/rle-huff/", fileName, fileNameNoExtension);
