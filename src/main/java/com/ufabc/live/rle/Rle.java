@@ -19,17 +19,11 @@ import java.util.Scanner;
 
 public class Rle {
 
-    public static void main(String[] args) throws IOException {
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Run-Length Encoding");
-        System.out.println("Digite o nome do arquivo (com a a extensão):");
-        String fileName = scanner.nextLine();
-        String fileNameNoExtension = fileName.split("\\.")[0];
+    public static void executeRleCompression(String readPath, String writePath, String fileName, String fileNameNoExtension) throws IOException {
+        System.out.println("Run-Length Encoding Compression");
 
         // Get bytes from video
-        byte[] original = getFileInByteArray("res/original/" + fileName);
+        byte[] original = getFileInByteArray(readPath + fileName);
 
         if (original == null) {
             return;
@@ -115,10 +109,13 @@ public class Rle {
         compressed = cleanArray(compressed, insertCount);
 
         // Save compressed file
-        writeBytesToFileNio(compressed, "res/rle/" + fileNameNoExtension + ".raedii");
+        writeBytesToFileNio(compressed, writePath + fileNameNoExtension + ".raedii");
+    }
+
+    public static void executeRleDecompression(String readPath, String writePath, String fileName, String fileNameNoExtension) throws IOException {
 
         // Read compressed file
-        byte[] bytes = getFileInByteArray("res/rle/" + fileNameNoExtension + ".raedii");
+        byte[] bytes = getFileInByteArray(readPath + fileNameNoExtension + ".raedii");
 
         // Print Compressed File
         // ####################################################################
@@ -172,9 +169,9 @@ public class Rle {
 //        System.out.println("");
 
         // Save decompressed file
-        writeBytesToFileNio(decompressed, "res/rle/" + fileName);
+        writeBytesToFileNio(decompressed, writePath + fileName);
 
-        System.out.println("Done!");
+        System.out.println("Pronto!");
     }
 
     private static void writeBytesToFileNio(byte[] bFile, String fileDest) {
@@ -200,7 +197,7 @@ public class Rle {
 
             return baos.toByteArray();
         } catch (FileNotFoundException e) {
-            System.out.println("File not found!");
+            System.out.println("Arquivo não encontrado!");
         }
 
         return null;

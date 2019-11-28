@@ -25,17 +25,10 @@ import java.util.Scanner;
 public final class HuffmanDecompress {
 	
 	// Command line main application function.
-	public static void main(String[] args) throws IOException {
+	public static void executeHuffmanDecompression(String readPath, String writePath, String fileName, String fileNameNoExtension) throws IOException {
 
-		Scanner scanner = new Scanner(System.in);
-
-		System.out.println("Huffman Decompression");
-		System.out.println("Digite o nome do arquivo (com a a extensão):");
-		String fileName = scanner.nextLine();
-		String fileNameNoExtension = fileName.split("\\.")[0];
-		
-		File inputFile  = new File("res/huff/" + fileName);
-		File outputFile = new File("res/huff/" + fileNameNoExtension + ".mov");
+		File inputFile  = new File(readPath + fileNameNoExtension + ".haedii");
+		File outputFile = new File(writePath + fileName);
 		
 		// Perform file decompression
 		try (BitInputStream in = new BitInputStream(new BufferedInputStream(new FileInputStream(inputFile)))) {

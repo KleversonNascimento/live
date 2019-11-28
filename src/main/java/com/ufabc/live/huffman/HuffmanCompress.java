@@ -28,17 +28,12 @@ import java.util.Scanner;
 public final class HuffmanCompress {
 	
 	// Command line main application function.
-	public static void main(String[] args) throws IOException {
-
-		Scanner scanner = new Scanner(System.in);
+	public static void executeHuffmanCompression(String readPath, String writePath, String fileName, String fileNameNoExtension) throws IOException {
 
 		System.out.println("Huffman Compression");
-		System.out.println("Digite o nome do arquivo (com a a extensão):");
-		String fileName = scanner.nextLine();
-		String fileNameNoExtension = fileName.split("\\.")[0];
-		
-		File inputFile  = new File("res/original/" + fileName);
-		File outputFile = new File("res/huff/" + fileNameNoExtension + ".haedii");
+
+		File inputFile  = new File(readPath + fileName);
+		File outputFile = new File(writePath + fileNameNoExtension + ".haedii");
 		
 		// Read input file once to compute symbol frequencies.
 		// The resulting generated code is optimal for static Huffman coding and also canonical.
